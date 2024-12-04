@@ -2,9 +2,9 @@ package POO.modelos;
 
 public class Auto {
 
-    String marca;
-    String modelo;
-    Integer anio;
+    public String marca;
+    public String modelo;
+    public Integer anio;
 
     public Auto() {
         this("Desconocido", "Desconocido", 0);

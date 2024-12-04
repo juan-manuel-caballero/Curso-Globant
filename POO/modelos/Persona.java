@@ -1,7 +1,7 @@
 package POO.modelos;
 public class Persona{
-    String nombre;
-    int edad;
+    public String nombre;
+    public int edad;
 
     public Persona() {
     }
