@@ -9,7 +9,6 @@ public class IntegradorPrimos {
         int[] primos = new int[cantidad];
         int contador = 0;
         sc.close();
-        boolean esPrimo = false;
         do {
             //Completar
         } while (contador <= primos.length);
