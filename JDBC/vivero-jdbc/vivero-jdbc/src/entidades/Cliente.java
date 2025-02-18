@@ -13,6 +13,27 @@ public class Cliente {
     private String codigoPostal;
     private int idEmpleado;
     private double limiteCredito;
+    
+    public Cliente() {
+    }
+
+    public Cliente(int codigoCliente, String nombreCliente, String nombreContacto,
+            String apellidoContacto, String telefono, String fax, String ciudad, String region, String pais,
+            String codigoPostal, int idEmpleado, double limiteCredito) {
+        this.codigoCliente = codigoCliente;
+        this.nombreCliente = nombreCliente;
+        this.nombreContacto = nombreContacto;
+        this.apellidoContacto = apellidoContacto;
+        this.telefono = telefono;
+        this.fax = fax;
+        this.ciudad = ciudad;
+        this.region = region;
+        this.pais = pais;
+        this.codigoPostal = codigoPostal;
+        this.idEmpleado = idEmpleado;
+        this.limiteCredito = limiteCredito;
+    }
+    
     public Cliente(int idCliente, int codigoCliente, String nombreCliente, String nombreContacto,
             String apellidoContacto, String telefono, String fax, String ciudad, String region, String pais,
             String codigoPostal, int idEmpleado, double limiteCredito) {
@@ -30,24 +51,7 @@ public class Cliente {
         this.idEmpleado = idEmpleado;
         this.limiteCredito = limiteCredito;
     }
-    public Cliente(int codigoCliente, String nombreCliente, String nombreContacto,
-            String apellidoContacto, String telefono, String fax, String ciudad, String region, String pais,
-            String codigoPostal, int idEmpleado, double limiteCredito) {
-        this.codigoCliente = codigoCliente;
-        this.nombreCliente = nombreCliente;
-        this.nombreContacto = nombreContacto;
-        this.apellidoContacto = apellidoContacto;
-        this.telefono = telefono;
-        this.fax = fax;
-        this.ciudad = ciudad;
-        this.region = region;
-        this.pais = pais;
-        this.codigoPostal = codigoPostal;
-        this.idEmpleado = idEmpleado;
-        this.limiteCredito = limiteCredito;
-    }
-    public Cliente() {
-    }
+    
     public int getIdCliente() {
         return idCliente;
     }
@@ -125,6 +129,27 @@ public class Cliente {
     }
     public void setLimiteCredito(double limiteCredito) {
         this.limiteCredito = limiteCredito;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Cliente{");
+        sb.append("idCliente=").append(idCliente);
+        sb.append(", codigoCliente=").append(codigoCliente);
+        sb.append(", nombreCliente=").append(nombreCliente);
+        sb.append(", nombreContacto=").append(nombreContacto);
+        sb.append(", apellidoContacto=").append(apellidoContacto);
+        sb.append(", telefono=").append(telefono);
+        sb.append(", fax=").append(fax);
+        sb.append(", ciudad=").append(ciudad);
+        sb.append(", region=").append(region);
+        sb.append(", pais=").append(pais);
+        sb.append(", codigoPostal=").append(codigoPostal);
+        sb.append(", idEmpleado=").append(idEmpleado);
+        sb.append(", limiteCredito=").append(limiteCredito);
+        sb.append('}');
+        return sb.toString();
     }
     
 }

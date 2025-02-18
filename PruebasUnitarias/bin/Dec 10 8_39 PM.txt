@@ -1,0 +1,77 @@
+import java.util.Scanner;
+
+public class Application{
+    public static Scanner sc = new Scanner(System.in);
+    public static void main(String[] args) {
+       int nota = sc.nextInt(); 
+       System.out.println( obtenerNota(nota));
+    }
+
+    public static String obtenerNota(int nota){
+        switch(nota/10){
+            case 0,1,2,3,4:return "F";           
+            case 5 : return "F";
+            case 6 : return "D";
+            case 7 : return "C";
+            case 8 : return "B";
+            case 9 : return "A";
+            case 10 : return "A";
+        }
+        return "F";
+    }
+}
+
+
+
+
+// Clase Test
+
+
+
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.util.Scanner;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+public class ApplicationTest {
+
+    private final PrintStream standarOut = System.out;
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+    @BeforeEach
+    public void setUp() {
+        System.setOut(new PrintStream(outputStream));
+    }
+
+    @AfterEach
+    public void tearDown() {
+        System.setOut(standarOut);
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "10, F", "70, C", "90, A" })
+    void testObtenerNota(int nota, String valorEsperado) {
+        String resultado = Application.obtenerNota(nota);
+        Assertions.assertEquals(valorEsperado, resultado);
+    }
+
+    @ParameterizedTest
+    @CsvSource({ "'10\n',F", "'70\n',C" })
+    void testMain(String input, String valorEsperado) {
+        ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
+        System.setIn(in);
+        Application.sc = new Scanner(System.in);
+        String resultado = Application.obtenerNota(Application.sc.nextInt());
+        Assertions.assertEquals(valorEsperado, resultado);
+    }
+}

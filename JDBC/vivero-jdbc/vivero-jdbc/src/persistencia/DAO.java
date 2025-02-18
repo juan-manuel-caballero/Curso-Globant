@@ -17,11 +17,12 @@ public abstract class DAO {
     private final String PASSWORD = "root";
     private final String DATABASE = "vivero";
     private final String DRIVER = "com.mysql.cj.jdbc.Driver";
+    private final String ZONA = "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false";
 
     protected void connectarDataBase() throws SQLException, ClassNotFoundException {
         try {
             Class.forName(DRIVER);
-            String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
+            String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE + ZONA;
             conexion = DriverManager.getConnection(url, USER, PASSWORD);
             System.out.println("Conexión exitosa a la base de datos.");
         } catch (Exception e) {

@@ -1,6 +1,7 @@
 package entidades;
 
 public class Producto {
+
     private int idProducto;
     private String codigoProducto;
     private String nombre;
@@ -11,7 +12,7 @@ public class Producto {
     private int cantidadEnStock;
     private double precioVenta;
     private double precioProveedor;
-    
+
     public Producto() {
     }
 
@@ -120,6 +121,14 @@ public class Producto {
 
     public void setPrecioProveedor(double precioProveedor) {
         this.precioProveedor = precioProveedor;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto [idProducto=" + idProducto + ", codigoProducto=" + codigoProducto + ", nombre=" + nombre
+                + ", idGama=" + idGama + ", dimensiones=" + dimensiones + ", proveedor=" + proveedor + ", descripcion="
+                + descripcion + ", cantidadEnStock=" + cantidadEnStock + ", precioVenta=" + precioVenta
+                + ", precioProveedor=" + precioProveedor + "]";
     }
 
 }
