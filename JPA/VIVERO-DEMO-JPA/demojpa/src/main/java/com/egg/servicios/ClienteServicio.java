@@ -12,7 +12,7 @@ public class ClienteServicio {
         this.daoCliente = new ClienteDAO();
     }
 
-    public void crearCliente(int codigodCliente, String nombreContacto, String apellidoContacto,
+    public void crearCliente(int codigoCliente, String nombreContacto, String apellidoContacto,
             String telefono, String fax, String ciudad, String region, String pais, String codigoPostal,
             Double limiteCredito, int empleado) {
 
@@ -20,7 +20,7 @@ public class ClienteServicio {
             // Crear una nueva instancia de Cliente
             Cliente clienteNueva = new Cliente();
 
-            clienteNueva.setCodigoCliente(codigodCliente);
+            clienteNueva.setCodigoCliente(codigoCliente);
             clienteNueva.setNombreContacto(nombreContacto);
             clienteNueva.setApellidoContacto(apellidoContacto);
             clienteNueva.setTelefono(telefono);
