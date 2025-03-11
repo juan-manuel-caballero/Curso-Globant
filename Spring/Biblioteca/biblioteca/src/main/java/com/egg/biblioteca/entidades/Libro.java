@@ -2,31 +2,30 @@ package com.egg.biblioteca.entidades;
 
 import java.util.Date;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+
 
 @Entity
 public class Libro {
-
     @Id
     private Long isbn;
-
-    @Column
     private String titulo;
-
-    @Column
     private Integer ejemplares;
-
-    @Column
+    
     @Temporal(TemporalType.DATE)
     private Date alta;
-
-    @JoinColumn(name = "id_autor")
+    
     @ManyToOne
     private Autor autor;
-
-    @JoinColumn(name = "id_editorial")
+    
     @ManyToOne
     private Editorial editorial;
+    
 
     public Libro() {
     }
@@ -78,4 +77,11 @@ public class Libro {
     public void setEditorial(Editorial editorial) {
         this.editorial = editorial;
     }
+
+    @Override
+    public String toString() {
+        return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", ejemplares=" + ejemplares + ", alta=" + alta
+                + ", autor=" + autor + ", editorial=" + editorial + "]";
+    }
+
 }

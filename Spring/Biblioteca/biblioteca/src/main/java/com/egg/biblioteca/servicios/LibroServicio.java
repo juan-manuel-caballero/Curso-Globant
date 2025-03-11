@@ -1,15 +1,5 @@
 package com.egg.biblioteca.servicios;
 
-import java.util.Date;
-
-import java.util.List;
-import java.util.ArrayList;
-
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.egg.biblioteca.entidades.Autor;
 import com.egg.biblioteca.entidades.Editorial;
 import com.egg.biblioteca.entidades.Libro;
@@ -18,8 +8,19 @@ import com.egg.biblioteca.repositorios.AutorRepositorio;
 import com.egg.biblioteca.repositorios.EditorialRepositorio;
 import com.egg.biblioteca.repositorios.LibroRepositorio;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 @Service
 public class LibroServicio {
+
     @Autowired
     private LibroRepositorio libroRepositorio;
     @Autowired
@@ -28,78 +29,94 @@ public class LibroServicio {
     private EditorialRepositorio editorialRepositorio;
 
     @Transactional
-    public void crearLibro(Long isbn, String titulo, Integer ejemplares, String idAutor, String idEditorial)
-            throws MiException {
+    public void crearLibro(Long isbn, String titulo, Integer ejemplares, UUID idAutor, UUID idEditorial) throws MiException {
+
         validar(isbn, titulo, ejemplares, idAutor, idEditorial);
+
         Autor autor = autorRepositorio.findById(idAutor).get();
         Editorial editorial = editorialRepositorio.findById(idEditorial).get();
 
+        if (autor == null) {
+            throw new MiException("El autor especificado no existe.");
+        }
+
+        if (editorial == null) {
+            throw new MiException("La editorial especificada no existe.");
+        }
+
         Libro libro = new Libro();
-        // Seteo atributos
         libro.setIsbn(isbn);
         libro.setTitulo(titulo);
         libro.setEjemplares(ejemplares);
         libro.setAlta(new Date());
         libro.setAutor(autor);
         libro.setEditorial(editorial);
-        // Persisto el objeto
+
         libroRepositorio.save(libro);
     }
 
     @Transactional(readOnly = true)
     public List<Libro> listarLibros() {
 
+
         List<Libro> libros = new ArrayList<>();
+
+
         libros = libroRepositorio.findAll();
         return libros;
     }
 
     @Transactional
-    public void modificarLibro(Long isbn, String titulo, Integer ejemplares, String idAutor, String idEditorial)
-            throws MiException {
+    public void modificarLibro(Long isbn, String titulo, Integer ejemplares, UUID idAutor, UUID idEditorial) throws MiException {
+
         validar(isbn, titulo, ejemplares, idAutor, idEditorial);
+
         Optional<Libro> respuesta = libroRepositorio.findById(isbn);
         Optional<Autor> respuestaAutor = autorRepositorio.findById(idAutor);
         Optional<Editorial> respuestaEditorial = editorialRepositorio.findById(idEditorial);
 
-        Autor autor = new Autor();
-        Editorial editorial = new Editorial();
-
-        if (respuestaAutor.isPresent()) {
-            autor = respuestaAutor.get();
+        if (respuesta.isEmpty()) {
+            throw new MiException("El libro especificado no existe.");
         }
 
-        if (respuestaEditorial.isPresent()) {
-            editorial = respuestaEditorial.get();
+        if (respuestaAutor.isEmpty()) {
+            throw new MiException("El autor especificado no existe.");
         }
 
-        if (respuesta.isPresent()) {
-            Libro libro = respuesta.get();
-            libro.setTitulo(titulo);
-            libro.setEjemplares(ejemplares);
-            libro.setAutor(autor);
-            libro.setEditorial(editorial);
+        if (respuestaEditorial.isEmpty()) {
+            throw new MiException("La editorial especificada no existe.");
         }
+
+        Libro libro = respuesta.get();
+        libro.setTitulo(titulo);
+        libro.setEjemplares(ejemplares);
+        libro.setAutor(respuestaAutor.get());
+        libro.setEditorial(respuestaEditorial.get());
+
+        libroRepositorio.save(libro);
     }
 
-    private void validar(Long isbn, String titulo, Integer ejemplares, String idAutor, String idEditorial)
-            throws MiException {
+    @Transactional(readOnly = true)
+    public Libro getOne(Long isbn) {
+        return libroRepositorio.findById(isbn).orElse(null);
+    }
+
+    private void validar(Long isbn, String titulo, Integer ejemplares, UUID idAutor, UUID idEditorial) throws MiException {
 
         if (isbn == null) {
-            throw new MiException("el isbn no puede ser nulo"); //
+            throw new MiException("El ISBN no puede ser nulo.");
         }
-        if (titulo.isEmpty() || titulo == null) {
-            throw new MiException("el titulo no puede ser nulo o estar vacio");
+        if (titulo == null || titulo.trim().isEmpty()) {
+            throw new MiException("El título no puede ser nulo o estar vacío.");
         }
         if (ejemplares == null) {
-            throw new MiException("ejemplares no puede ser nulo");
+            throw new MiException("La cantidad de ejemplares no puede ser nula.");
         }
-        if (idAutor.isEmpty() || idAutor == null) {
-            throw new MiException("el Autor no puede ser nulo o estar vacio");
+        if (idAutor == null) {
+            throw new MiException("El ID del autor no puede ser nulo o estar vacío.");
         }
-
-        if (idEditorial.isEmpty() || idEditorial == null) {
-            throw new MiException("La Editorial no puede ser nula o estar vacia");
+        if (idEditorial == null) {
+            throw new MiException("El ID de la editorial no puede ser nulo o estar vacío.");
         }
     }
 }

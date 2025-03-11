@@ -1,16 +1,21 @@
 package com.egg.biblioteca.entidades;
 
+
 import java.util.UUID;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+
 
 @Entity
 public class Autor {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    @Column(name = "nombre")
+
     private String nombre;
 
     public Autor() {
@@ -31,4 +36,10 @@ public class Autor {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    @Override
+    public String toString() {
+        return "Autor [id=" + id + ", nombre=" + nombre + "]";
+    }
+
 }
