@@ -18,7 +18,7 @@ import com.egg.biblioteca.servicios.UsuarioServicio;
 public class SeguridadWeb {
     @Autowired
     public UsuarioServicio usuarioServicio;
-    
+
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(usuarioServicio)
@@ -27,26 +27,24 @@ public class SeguridadWeb {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/admin/**").hasRole("ADMIN")                       
-                        .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()//Quitar el "/**" ya que sino esto va a permitir que se 
-                                                                                                //pueda ingresar aunque no esté logueado
-                        .requestMatchers("/login", "/register").permitAll() // Permitir acceso a login y registro
-                        .anyRequest().authenticated() //Requiere autenticacion 
-                )
-                .formLogin((form) -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/logincheck")
-                        .usernameParameter("email")
-                        .passwordParameter("password")
-                        .defaultSuccessUrl("/inicio", true)
-                        .permitAll())    
-                .logout((logout) -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
-                        .permitAll())
-                .csrf(csrf -> csrf.disable());
+    http
+    .authorizeHttpRequests((authorize) -> authorize
+    .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+    .requestMatchers("/css/*", "/js/*", "/img/*", "/registro", "/registrar").permitAll()
+    .anyRequest()
+    .authenticated())
+    .formLogin((form) -> form
+    .loginPage("/login")
+    .loginProcessingUrl("/logincheck")
+    .usernameParameter("email")
+    .passwordParameter("password")
+    .defaultSuccessUrl("/inicio", true)
+    .permitAll())
+    .logout((logout) -> logout
+    .logoutUrl("/logout")
+    .logoutSuccessUrl("/login")
+    .permitAll())
+    .csrf(csrf -> csrf.disable());
         return http.build();
     }
 }
